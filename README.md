@@ -4,7 +4,11 @@
 
 ## how to run
 
-TODO
+using matlab, run the file **~/src/run.m** this file will produce all the images included in the project report
+
+## project report
+
+the project report can be found in **~/docs/final-project.pdf**
 
 
 ## team members
