@@ -19,8 +19,7 @@ figure(2);
 pic1_pts(:,2) = h1-pic1_pts(:,2);pic2_pts(:,2) = h2-pic2_pts(:,2);
 pic1_pts(:,1) = w1-pic1_pts(:,1);pic2_pts(:,1) = w2-pic2_pts(:,1);
 blended_im = transform_and_blend(pic1, pic2, pic1_pts, pic2_pts);
-imshow(blended_im-50)
-
+imshow(blended_im)
 
 %%%%%% 3 %%%%%%
 % figure(3), hold on
