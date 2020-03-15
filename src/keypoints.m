@@ -5,7 +5,7 @@ function [all, stable] = keypoints(orig, pyramid)
     size(stable)
     stable = remove_to_close(orig, stable, 20);
     size(stable)
-    stable = remove_patch(orig, stable, 2);
+    stable = remove_patch(double(orig), stable, 2);
     size(stable)
 end
 
@@ -43,13 +43,11 @@ end
 
 
 function new =  remove_patch(im, old, thres)
-    new = [zeros(size(old))];
+    new = old;s = zeros(length(old),1);
     for i = 1:length(old)
-        if std2(neighbors(im, old(i,1),old(i,2))) < thres
-            new(i,:) = old(i,:);
-        end
+        s(i) = std(neighbors(im, old(i,1),old(i,2)));
     end
-    new(new(:,1) == 0,:)=[];
+    new(s > thres,:)=[];
 end
 
 
@@ -57,4 +55,5 @@ function vals = neighbors(im, row, col)
     filter = zeros(size(im));
     filter(row,col) = 1;
     vals = im(conv2(filter, ones(5,5), 'same') > 0);
+    vals = vals(:);
 end
