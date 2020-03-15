@@ -109,6 +109,10 @@ function targetImage = transform_and_blend(pic1, pic2, pic1_pts, pic2_pts)
                     targetImage(height, width, :) = pic1(pp(2), pp(1), :);
                  
             end
+            
+            if (w1 >= bp(1) && bp(1) > 0) && (h1 >= bp(2) && bp(2) > 0)
+                targetImage(height, width, :) = pic2(bp(2), bp(1), :);
+            end
                 
             
             % if pX AND pY is positive, record the value at projected(pX, pY, channel)
