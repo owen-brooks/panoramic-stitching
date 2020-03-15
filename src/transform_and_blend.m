@@ -1,6 +1,7 @@
 function targetImage = transform_and_blend(pic1, pic2, pic1_pts, pic2_pts)
     % pic1 is defined as base image
     % pic2 is image that will be projected onto pic1
+    [h1,w1,~] = size(pic1); [h2,w2,~] = size(pic2);
     
 % Projected Value
     xHat_1 = pic2_pts(1, 1);
@@ -86,40 +87,38 @@ function targetImage = transform_and_blend(pic1, pic2, pic1_pts, pic2_pts)
                         0, 1, DY;
                         0, 0 , 1;];
 
-    targetImage = zeros(round(targetImageHeight), round(targetImageWidth), 3);
-    for channel = 1 : 3
-        for width = 1 : round(targetImageWidth)
-            for height = 1 : round(targetImageHeight)
-                % use translationMatrix to go to base image, return (bX, bY, channel)
-                basePixelLocation = inv(translationMatrix) * [width; height; 1];
-                basePixelLocation = basePixelLocation / basePixelLocation(3);
-                
-                % use H to go from base image to image 2, return (pX, pY, channel)
-                projectedPixelLocation = H * [basePixelLocation(1); basePixelLocation(2); 1];
-                projectedPixelLocation(1) = projectedPixelLocation(1) / projectedPixelLocation(3);
-                projectedPixelLocation(2) = projectedPixelLocation(2) / projectedPixelLocation(3);
-                
-                % Round
-                basePixelLocation = round(basePixelLocation);
-                projectedPixelLocation = round(projectedPixelLocation);
-                
-                % if bX AND bY is positive, record the value at base(bX, bY, channel)
-                if (basePixelLocation(1,1) > 0 && basePixelLocation(2,1) > 0)
-%                     targetImage(height, width, channel) = pic1(basePixelLocation(1), basePixelLocation(2), channel);
-                    targetImage(height, width, channel) = 0;
-                end
+    targetImage = ones(round(targetImageHeight), round(targetImageWidth), 3);
 
-                % if pX AND pY is positive, record the value at projected(pX, pY, channel)
-                if (projectedPixelLocation(1,1) > 0 && projectedPixelLocation(2,1) > 0)
-%                     targetImage(height, width, channel) = pic2(projectedPixelLocation(1), projectedPixelLocation(2), channel);
-                    targetImage(height,width,channel) = 255;
-                end
+    for width = 1 : round(targetImageWidth)
+        for height = 1 : round(targetImageHeight)
+            % use translationMatrix to go to base image, return (bX, bY, channel)
+            bp = inv(translationMatrix) * [width; height; 1];
+            bp = bp / bp(3);
 
-                % if both are positive, blend them
+            % use H to go from base image to image 2, return (pX, pY, channel)
+            pp = H * [bp(1); bp(2); 1];
+            pp(1) = pp(1) / pp(3);
+            pp(2) = pp(2) / pp(3);
 
+            % Round
+            bp = round(bp);
+            pp = round(pp);
+
+            % if bX AND bY is positive, record the value at base(bX, bY, channel)
+            if (w2 >= pp(1) && pp(1) > 0) && (h2 >= pp(2) && pp(2) > 0)
+                    targetImage(height, width, :) = pic1(pp(2), pp(1), :);
+                 
             end
+                
+            
+            % if pX AND pY is positive, record the value at projected(pX, pY, channel)
+            
+
+            % if both are positive, blend them
+
         end
     end
+
     
     % Testing the projection on base
 %     projectingXY = [projectingUL(1) projectingUL(2);
