@@ -122,10 +122,10 @@ function targetImage = transform_and_blend(pic1, pic2, pic1_pts, pic2_pts)
     end
     
     % Testing the projection on base
-    projectingXY = [projectingUL(1) projectingUL(2);
-    projectingBL(1) projectingBL(2);
-    projectingUR(1) projectingUR(2);
-    projectingBR(1) projectingBR(2);];
-    lines = insertShape(targetImage, 'Line', [projectingXY(1,1) projectingXY(1,2) projectingXY(2,1) projectingXY(2,2) projectingXY(4,1) projectingXY(4,2) projectingXY(3,1) projectingXY(3,2) projectingXY(1,1) projectingXY(1,2)], 'Color', 'red', 'LineWidth', 5);
-    imshow(lines);
+%     projectingXY = [projectingUL(1) projectingUL(2);
+%     projectingBL(1) projectingBL(2);
+%     projectingUR(1) projectingUR(2);
+%     projectingBR(1) projectingBR(2);];
+%     lines = insertShape(targetImage, 'Line', [projectingXY(1,1) projectingXY(1,2) projectingXY(2,1) projectingXY(2,2) projectingXY(4,1) projectingXY(4,2) projectingXY(3,1) projectingXY(3,2) projectingXY(1,1) projectingXY(1,2)], 'Color', 'red', 'LineWidth', 5);
+%     imshow(lines);
 end
