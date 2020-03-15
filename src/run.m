@@ -7,7 +7,7 @@ pic1 = imread('./pics/pic1.jpeg'); pic2 = imread('./pics/pic2.jpeg');
 pic1_pts = [375 750;1210 425;780 470;555 120;];
 pic2_pts = [35 775; 890 450; 505 470;280 85;];
 
-figure(1); hold on; imshow([pic1 pic2]);
+%figure(1); hold on; imshow([pic1 pic2]);
 for i = 1:4
     hold on;
     plot([pic1_pts(i, 1) w1+ pic2_pts(i, 1)], [pic1_pts(i, 2) pic2_pts(i, 2)], '.', 'MarkerSize', 30);
@@ -15,10 +15,9 @@ end
 hold off;
 
 %%%%%% 2 %%%%%%
-figure(2);
+%figure(2);
 blended_im = transform_and_blend(pic1, pic2, pic1_pts, pic2_pts);
-imshow(blended_im)
-
+imshow(blended_im);
 
 %%%%%% 3 %%%%%%
 % figure(3), hold on
