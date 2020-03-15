@@ -52,19 +52,19 @@ function targetImage = transform_and_blend(pic1, pic2, pic1_pts, pic2_pts)
     pic2_upperRight = [size(pic2, 2), 0, 1];
     pic2_bottomRight = [size(pic2, 2), size(pic2, 1), 1];
 
-    projectingUL = pic2_upperLeft * inv(H);
+    projectingUL = H * pic2_upperLeft';
     projectingUL(1) = projectingUL(1) / projectingUL(3);
     projectingUL(2) = projectingUL(2) / projectingUL(3);
         
-    projectingBL = pic2_bottomLeft * inv(H);
+    projectingBL = H * pic2_bottomLeft';
     projectingBL(1) = projectingBL(1) / projectingBL(3);
     projectingBL(2) = projectingBL(2) / projectingBL(3);
     
-    projectingUR = pic2_upperRight * inv(H);
+    projectingUR = H * pic2_upperRight';
     projectingUR(1) = projectingUR(1) / projectingUR(3);
     projectingUR(2) = projectingUR(2) / projectingUR(3);
     
-    projectingBR = pic2_bottomRight * inv(H);
+    projectingBR = (H) * pic2_bottomRight';
     projectingBR(1) = projectingBR(1) / projectingBR(3);
     projectingBR(2) = projectingBR(2) / projectingBR(3);
     
@@ -106,7 +106,14 @@ function targetImage = transform_and_blend(pic1, pic2, pic1_pts, pic2_pts)
 
             % if bX AND bY is positive, record the value at base(bX, bY, channel)
             if (w2 >= pp(1) && pp(1) > 0) && (h2 >= pp(2) && pp(2) > 0)
-                    targetImage(height, width, :) = pic1(pp(2), pp(1), :);
+                    
+                 if (w1 >= bp(1) && bp(1) > 0) && (h1 >= bp(2) && bp(2) > 0)
+                    alpha = .7;
+                    blend = ((1-alpha) * pic2(bp(2), bp(1), :)) + (alpha * pic1(pp(2), pp(1), :));
+                    targetImage(height, width, :) = blend;
+                 else
+                     targetImage(height, width, :) = pic1(pp(2), pp(1), :);
+                 end
                  
             elseif (w1 >= bp(1) && bp(1) > 0) && (h1 >= bp(2) && bp(2) > 0)
                 targetImage(height, width, :) = pic2(bp(2), bp(1), :);
