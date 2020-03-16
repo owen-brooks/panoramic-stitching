@@ -79,8 +79,8 @@ end
 function H = transformation_mat(kp1, kp2)
     A = [];
     for i =1:length(kp1)
-        A = [A; -kp1(i,1) -kp1(i,2) -1 0 0 0 kp2(i,1)*kp1(i,1) kp2(i,1)*kp1(i,2) kp2(i,1)]
-        A = [A; 0 0 0 -kp1(i,1) -kp1(i,2) -1 kp2(i,2)*kp1(i,1) kp2(i,2)*kp1(i,2) kp2(i,2)]
+        A = [A; -kp1(i,1) -kp1(i,2) -1 0 0 0 kp2(i,1)*kp1(i,1) kp2(i,1)*kp1(i,2) kp2(i,1)];
+        A = [A; 0 0 0 -kp1(i,1) -kp1(i,2) -1 kp2(i,2)*kp1(i,1) kp2(i,2)*kp1(i,2) kp2(i,2)];
     end
     [~, ~, eigenV] = svd(transpose(A)*A);
     h = eigenV(:, end);

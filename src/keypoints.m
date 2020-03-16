@@ -3,7 +3,7 @@ function [all, stable] = keypoints(orig, pyramid)
     size(all)
     stable = remove_edge(orig, all);
     size(stable)
-    stable = remove_to_close(orig, stable, 20);
+    stable = remove_too_close(orig, stable, 20);
     size(stable)
     stable = remove_patch(double(orig), stable, 2);
     size(stable)
@@ -19,26 +19,29 @@ function maximas = local_maximas(pyramid1)
         dog3 = cell2mat(pyramid1(4+scale))-cell2mat(pyramid1(3+scale));
         dog = cat(3,dog1,dog2,dog3);
         f = imregionalmax(dog, ones(3,3,3));
-        [row, col] = find(f(:,:,2) == 1);
-        maximas = [maximas ; col.*2^(i-1) row.*2^(i-1)];
+        [rows, cols] = find(f(:,:,2) == 1);
+        maximas = [maximas ; [rows, cols].*2^(i-1)];
     end   
     maximas = unique(maximas, 'rows');
 end
 
 function new = remove_edge(im, old)
     edge_im = edge(im);
-    [row, col] = find(edge_im == 1);
-    new = setdiff(old, [col row], 'rows');
+    [rows, cols] = find(edge_im == 1);
+    new = setdiff(old, [rows, cols], 'rows');
 end
 
 
-function new = remove_to_close(im, old, thres)
-    [h, w] = size(im);new = [];
-    new = old;
-    new(new(:, 1) < thres, :)= [];
-    new(new(:, 2) < thres, :)= [];
-    new(new(:, 1) > w-thres, :)= [];
-    new(new(:, 2) > h-thres, :)= [];
+function new = remove_too_close(im, old, thres)
+    [h, w] = size(im);new = old;
+    % row
+    new(new(:, 1) < thres, :) = [];
+    new(new(:, 1) > h-thres, :) = [];
+    
+    % col
+    new(new(:, 2) < thres, :) = [];
+    
+    new(new(:, 2) > w-thres, :) = [];
 end
 
 
@@ -51,9 +54,9 @@ function new =  remove_patch(im, old, thres)
 end
 
 
-function vals = neighbors(im, row, col)
-    filter = zeros(size(im));
-    filter(row,col) = 1;
-    vals = im(conv2(filter, ones(5,5), 'same') > 0);
-    vals = vals(:);
+
+function desc = neighbors(im, row, col)
+
+    desc = im(row-4:row+4,col-4:col+4,:);
+    desc = desc(:);
 end
