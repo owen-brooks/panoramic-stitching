@@ -16,7 +16,7 @@ function kp_used = ransac(kps1, kps2, N)
     end
     
     
-    [~,i] = max(scores);
+    [~,i] = min(scores);
     kp_used = idxs(i,:);
 
 end

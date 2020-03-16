@@ -98,8 +98,8 @@ figure(10);
 k1 = kps1(kp_used,:);
 k2 = kps2(kp_used,:);
 
-k1 = [k1(:,2) k1(:,1)];
-k2 = [k2(:,2) k2(:,1)];
+% k1 = [k1(:,2) k1(:,1)];
+% k2 = [k2(:,2) k2(:,1)];
 
 blended_im = transform_and_blend(pic1, pic2, k2, k1);
 imshow(blended_im)
